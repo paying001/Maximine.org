@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maximine.org | Home of Wealth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D4AF37; /* Gold */
+            --primary-dark: #AA8C2C;
+            --bg-dark: #0a192f;
+            --bg-card: #112240;
+            --text-light: #e6f1ff;
+            --text-muted: #8892b0;
+            --danger: #ff5f5f;
+            --success: #64ffda;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px; /* Mobile app feel */
+            min-height: 100vh;
+            background-color: var(--bg-card);
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            padding-bottom: 60px;
+        }
+
+        /* --- Utilities --- */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .text-gold { color: var(--primary); }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+
+        /* --- Buttons & Inputs --- */
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: #000;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        .btn-back {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            width: auto;
+            padding: 8px 20px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Sections --- */
+        .section {
+            padding: 30px 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Auth Page */
+        .auth-header h1 { font-size: 28px; margin-bottom: 10px; }
+        .auth-header p { color: var(--text-muted); margin-bottom: 30px; }
+        .logo-area { font-size: 40px; margin-bottom: 20px; }
+
+        /* Dashboard */
+        .balance-card {
+            background: linear-gradient(135deg, #233554, #112240);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .balance-item h3 { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+        .balance-item p { font-size: 18px; font-weight: 700; color: var(--success); }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .dash-btn {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .dash-btn:hover { border-color: var(--primary); background: rgba(255,255,255,0.08); }
+        .dash-btn span { display: block; margin-top: 5px; font-weight: 500; }
+
+        .footer-credit {
+            margin-top: 50px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Miner Page */
+        .mining-circle {
+            width: 150px;
+            height: 150px;
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        /* History */
+        .history-item {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .hist-amount.plus { color: var(--success); }
+        .hist-amount.minus { color: var(--danger); }
+
+        /* Notifications */
+        .fake-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(16, 16, 16, 0.95);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            z-index: 1000;
+            border: 1px solid var(--primary);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .show-toast { opacity: 1; }
+
+        /* Popups */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .popup-box {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            width: 85%;
+            max-width: 350px;
+            border: 1px solid var(--primary);
+        }
+        .copy-row {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .copy-row span { flex-grow: 1; font-family: monospace; }
+        .copy-icon { cursor: pointer; color: var(--primary); font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <div id="toast-notification" class="fake-notification"></div>
+
+    <div class="app-container">
+        
+        <div id="auth-section" class="section">
+            <div class="text-center auth-header">
+                <div class="logo-area">💎</div>
+                <h1>Maximine</h1>
+                <p>Home of wealth</p>
+            </div>
+
+            <div id="register-form">
+                <h3 class="mb-20">Join us now!</h3>
+                <input type="text" id="reg-username" placeholder="Username">
+                <input type="text" id="reg-email" placeholder="Email/Phone Number">
+                <input type="password" id="reg-password" placeholder="Password">
+                <button class="btn btn-primary" onclick="handleRegister()">Register Now</button>
+                <button class="btn btn-outline" onclick="toggleAuth()">Already have an account? Login Here</button>
+            </div>
+
+            <div id="login-form" class="hidden">
+                <h3 class="mb-20">Welcome Back</h3>
+                <p style="font-size: 13px; margin-bottom: 15px;">Login and start earning</p>
+                <input type="text" id="login-username" placeholder="Username">
+                <input type="password" id="login-password" placeholder="Password">
+                <button class="btn btn-primary" onclick="handleLogin()">Login Now</button>
+                <button class="btn btn-outline" onclick="toggleAuth()">Create an account</button>
+            </div>
+        </div>
+
+        <div id="dashboard-section" class="section hidden">
+            <div class="mb-20">
+                <p class="text-muted">Welcome,</p>
+                <h2 id="dash-username" class="text-gold">User</h2>
+            </div>
+
+            <div class="balance-card">
+                <div class="balance-item">
+                    <h3>Total Balance</h3>
+                    <p id="total-balance">NGN 0.00</p>
+                </div>
+                <div class="balance-item" style="text-align: right;">
+                    <h3>Total Mined</h3>
+                    <p id="mined-balance">NGN 0.00</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dash-btn" onclick="showPage('miner-intro')">
+                    <div style="font-size: 24px;">⛏️</div>
+                    <span>Miner</span>
+                </div>
+                <div class="dash-btn" onclick="showPage('withdraw')">
+                    <div style="font-size: 24px;">🏦</div>
+                    <span>Withdraw</span>
+                </div>
+                <div class="dash-btn" onclick="showPage('profile')">
+                    <div style="font-size: 24px;">👤</div>
+                    <span>Profile</span>
+                </div>
+                <div class="dash-btn" onclick="showPage('history')">
+                    <div style="font-size: 24px;">📜</div>
+                    <span>History</span>
+                </div>
+            </div>
+
+            <div class="footer-credit">
+                <p>Powered & Sponsored by We Grant Org</p>
+                <button class="btn btn-outline" style="width: auto; padding: 5px 20px; font-size: 12px; margin-top: 15px;" onclick="location.reload()">Logout</button>
+            </div>
+        </div>
+
+        <div id="miner-intro-section" class="section hidden">
+            <button class="btn btn-back" onclick="showPage('dashboard')">← Back</button>
+            <div class="text-center mt-20">
+                <div style="font-size: 40px; margin-bottom: 10px;">🔐</div>
+                <h2>Start Mining</h2>
+                <p class="text-muted mb-20">Start Mining and Start Earning!!!</p>
+                
+                <p style="font-size: 13px; margin-bottom: 5px; text-align: left;">Input your hash code to get started</p>
+                <input type="text" id="hash-input" placeholder="Ex: HASH#...">
+                <p style="font-size: 11px; color: var(--primary); margin-bottom: 20px; text-align: left;">Note: Get your hash code from any trusted vendor.</p>
+                
+                <button class="btn btn-primary" onclick="validateHash()">Confirm Hash code</button>
+            </div>
+        </div>
+
+        <div id="miner-active-section" class="section hidden">
+            <button class="btn btn-back" onclick="showPage('dashboard')">← Back</button>
+            <div class="text-center mt-20">
+                <h2>Start your mining journey!!!</h2>
+                <p class="text-muted">Available Mining times: <span id="clicks-left" class="text-gold">5</span></p>
+
+                <div class="mining-circle">
+                    <div style="font-size: 40px;">⚡</div>
+                </div>
+
+                <button id="mine-btn" class="btn btn-primary" onclick="executeMine()">MINE</button>
+                <p id="mining-status" class="mt-20 text-gold" style="height: 20px;"></p>
+            </div>
+        </div>
+
+        <div id="withdraw-section" class="section hidden">
+            <button class="btn btn-back" onclick="showPage('dashboard')">← Back</button>
+            <h2 class="mb-20">Withdrawal Portal</h2>
+            
+            <input type="number" placeholder="Account Number">
+            <input type="text" placeholder="Account Name">
+            <input type="text" placeholder="Bank Name">
+            <input type="number" id="withdraw-amount" placeholder="Amount (NGN)">
+            
+            <button class="btn btn-primary" onclick="processWithdrawal()">Withdraw Now</button>
+        </div>
+
+        <div id="profile-section" class="section hidden">
+            <button class="btn btn-back" onclick="showPage('dashboard')">← Back</button>
+            <h2 class="mb-20">Profile Page</h2>
+            
+            <label class="text-muted" style="font-size: 12px;">Set Full Name</label>
+            <input type="text" placeholder="Full Name">
+            
+            <label class="text-muted" style="font-size: 12px;">Set Phone number</label>
+            <input type="text" placeholder="Phone Number">
+            
+            <div style="margin-top: 20px;">
+                <label class="text-muted" style="font-size: 12px;">Page Code</label>
+                <div class="copy-row">
+                    <span id="page-code">2992733883</span>
+                    <div class="copy-icon" onclick="copyCode()">📋</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="history-section" class="section hidden">
+            <button class="btn btn-back" onclick="showPage('dashboard')">← Back</button>
+            <h2 class="mb-20">Transaction History</h2>
+            <div id="history-list">
+                <p class="text-muted text-center">No history yet.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="success-popup" class="popup-overlay hidden">
+        <div class="popup-box">
+            <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
+            <h3 class="text-gold">Congratulations</h3>
+            <p id="popup-message" style="font-size: 13px; color: var(--text-muted); margin-top: 10px;">
+                Your withdrawal has been successfully sent.
+            </p>
+            <button class="btn btn-outline" style="margin-top: 20px; padding: 8px;" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- State Management ---
+        let state = {
+            username: '',
+            balance: 0,
+            minedTotal: 0,
+            miningClicks: 0,
+            hashUsed: false,
+            history: []
+        };
+
+        const miningAmounts = [160000, 600000, 122000, 245000, 324000];
+        const correctHash = "HASH#293837382";
+
+        // --- Navigation ---
+        function toggleAuth() {
+            document.getElementById('register-form').classList.toggle('hidden');
+            document.getElementById('login-form').classList.toggle('hidden');
+        }
+
+        function showPage(pageName) {
+            // Hide all sections
+            const sections = ['auth', 'dashboard', 'miner-intro', 'miner-active', 'withdraw', 'profile', 'history'];
+            sections.forEach(s => document.getElementById(s + '-section').classList.add('hidden'));
+
+            // Show target
+            document.getElementById(pageName + '-section').classList.remove('hidden');
+
+            if(pageName === 'history') renderHistory();
+        }
+
+        // --- Auth Logic ---
+        function handleRegister() {
+            const user = document.getElementById('reg-username').value;
+            if(!user) return alert("Please enter a username");
+            state.username = user;
+            enterDashboard();
+        }
+
+        function handleLogin() {
+            const user = document.getElementById('login-username').value;
+            if(!user) return alert("Please enter a username");
+            state.username = user;
+            enterDashboard();
+        }
+
+        function enterDashboard() {
+            document.getElementById('dash-username').innerText = state.username;
+            updateBalances();
+            showPage('dashboard');
+            startFakeNotifications();
+        }
+
+        function updateBalances() {
+            document.getElementById('total-balance').innerText = `NGN ${state.balance.toLocaleString()}.00`;
+            document.getElementById('mined-balance').innerText = `NGN ${state.minedTotal.toLocaleString()}.00`;
+        }
+
+        // --- Mining Logic ---
+        function validateHash() {
+            const input = document.getElementById('hash-input').value.trim();
+            if(input === correctHash) {
+                // Reset mining session if it's a new valid hash entry
+                if(state.miningClicks >= 5) {
+                    state.miningClicks = 0; 
+                }
+                document.getElementById('clicks-left').innerText = 5 - state.miningClicks;
+                showPage('miner-active');
+            } else {
+                alert("Invalid hash code");
+            }
+        }
+
+        function executeMine() {
+            if(state.miningClicks >= 5) {
+                alert("Session expired. Please get another hash code.");
+                return;
+            }
+
+            const amount = miningAmounts[state.miningClicks];
+            state.balance += amount;
+            state.minedTotal += amount;
+            state.miningClicks++;
+
+            // Update UI
+            updateBalances();
+            document.getElementById('clicks-left').innerText = 5 - state.miningClicks;
+
+            // Feedback
+            const status = document.getElementById('mining-status');
+            status.innerText = `You just mined NGN ${amount.toLocaleString()}`;
+            setTimeout(() => status.innerText = "", 3000);
+
+            // Add to history
+            addHistory(`Mined`, amount, 'plus');
+
+            // Check completion
+            if(state.miningClicks >= 5) {
+                document.getElementById('mine-btn').innerText = "Session Expired";
+                document.getElementById('mine-btn').style.background = "#555";
+            }
+        }
+
+        // --- Withdrawal Logic ---
+        function processWithdrawal() {
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            if(!amount || amount <= 0) return alert("Enter a valid amount");
+            if(amount > state.balance) return alert("Insufficient balance");
+
+            state.balance -= amount;
+            updateBalances();
+            addHistory('Withdrawal', amount, 'minus');
+
+            const msg = `Congratulations your withdrawal NGN${amount.toLocaleString()} has been successful sent to your account, it will arrive your account 1-3 minutes and if not received contact your bank`;
+            document.getElementById('popup-message').innerText = msg;
+            document.getElementById('success-popup').classList.remove('hidden');
+        }
+
+        function closePopup() {
+            document.getElementById('success-popup').classList.add('hidden');
+            showPage('dashboard');
+        }
+
+        // --- Profile Logic ---
+        function copyCode() {
+            const code = document.getElementById('page-code').innerText;
+            navigator.clipboard.writeText(code);
+            alert("Code copied!");
+        }
+
+        // --- History Logic ---
+        function addHistory(type, amount, cssClass) {
+            const date = new Date().toLocaleDateString();
+            state.history.unshift({ type, amount, cssClass, date });
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('history-list');
+            if(state.history.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center">No history yet.</p>';
+                return;
+            }
+            
+            let html = '';
+            state.history.forEach(item => {
+                const sign = item.cssClass === 'plus' ? '+' : '-';
+                html += `
+                    <div class="history-item">
+                        <div>
+                            <div style="font-weight:600">${item.type}</div>
+                            <div style="font-size:10px; color:#888">${item.date}</div>
+                        </div>
+                        <div class="hist-amount ${item.cssClass}">
+                            ${sign} NGN ${item.amount.toLocaleString()}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // --- Fake Notifications ---
+        function startFakeNotifications() {
+            setInterval(() => {
+                const names = ["James", "Sarah", "Emeka", "Chinedu", "Aisha", "Tunde", "Grace", "Emmanuel"];
+                const amounts = ["200,000", "600,000", "45,000", "150,000", "1,200,000", "320,000"];
+                
+                const randomName = names[Math.floor(Math.random() * names.length)];
+                const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+                
+                // Obfuscate name
+                const maskedName = randomName.substring(0, 2) + "***";
+
+                const toast = document.getElementById('toast-notification');
+                toast.innerText = `${maskedName} Just withdrew NGN${randomAmount}`;
+                toast.classList.add('show-toast');
+
+                setTimeout(() => {
+                    toast.classList.remove('show-toast');
+                }, 3000);
+
+            }, 5000); // Every 5 seconds
+        }
+
+    </script>
+</body>
+</html>
